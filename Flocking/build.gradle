@@ -1,0 +1,42 @@
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+ext {
+    libp5xVersion = "0.353.0-beta-3"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation "org.praxislive.libp5x:processing-core:$libp5xVersion"
+    implementation "org.praxislive.libp5x:processing-java2d:$libp5xVersion"
+
+    // include local libraries in libs folder if required
+    implementation fileTree(dir: "libs", includes: ["*.jar"])
+
+}
+
+compileJava {
+    options.release = 11
+}
+
+// include content from data folder in distribution
+distributions {
+    main {
+        contents {
+            into ("data") {
+                from "data"
+            }
+        }
+    }
+}
+
+// set main class
+application {
+    mainClass = "com.codelerity.libp5x.flocking.Flocking"
+}

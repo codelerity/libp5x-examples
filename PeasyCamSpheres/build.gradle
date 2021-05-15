@@ -1,0 +1,78 @@
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+ext {
+    lwjglVersion = "3.2.3"
+    libp5xVersion = "0.353.0-beta-3"
+}
+
+// configure natives per OS, as at https://www.lwjgl.org/customize
+switch (OperatingSystem.current()) {
+    case OperatingSystem.LINUX:
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+                ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+                : "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = natives-macos
+        break
+    case OperatingSystem.WINDOWS:
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.contains("64")
+                ? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+                : "natives-windows-x86"
+        break
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation "org.praxislive.libp5x:processing-core:$libp5xVersion"
+    implementation "org.praxislive.libp5x:processing-lwjgl:$libp5xVersion"
+
+    // include local libraries in libs folder if required
+    implementation fileTree(dir: "libs", includes: ["*.jar"])
+
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-assimp"
+    implementation "org.lwjgl:lwjgl-egl"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-opengl"
+    implementation "org.lwjgl:lwjgl-opengles"
+    implementation "org.lwjgl:lwjgl-stb"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengles::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+}
+
+compileJava {
+    options.release = 11
+}
+
+// include content from data folder in distribution
+distributions {
+    main {
+        contents {
+            into ("data") {
+                from "data"
+            }
+        }
+    }
+}
+
+// set main class and JVM args as required by LWJGL
+application {
+    mainClass = "com.codelerity.libp5x.peasycam.PeasyCamSpheres"
+    applicationDefaultJvmArgs = ["-Djava.awt.headless=true", "-XstartOnFirstThread", "-XX:+IgnoreUnrecognizedVMOptions"]
+}
