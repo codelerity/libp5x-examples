@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 ext {
-    libp5xVersion = "0.353.0-beta-3"
+    libp5xVersion = "0.353.0-beta-4"
 }
 
 repositories {
