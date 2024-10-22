@@ -1,23 +1,11 @@
-*.class
-
 hs_err_pid*
 
-.gradle
-build/
-
+# Package Files #
 target/
+.flattened-pom.xml
+dependency-reduced-pom.xml
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Cache of project
-.gradletasknamecache
-
-# Eclipse Files #
-.classpath
-.project
-.settings
-
-# NetBeans Files #
-/nbproject/
+# NetBeans related files #
+nbproject/
+nbactions.xml
 nb-configuration.xml
