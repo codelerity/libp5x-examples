@@ -1,11 +1,12 @@
 # Examples for libp5x
 
 [libp5x](https://github.com/praxis-live/libp5x/) is a modularized fork of [Processing](https://processing.org/)
-used inside [PraxisLIVE](https://www.praxislive.org). Based on Processing v3.5.3, it fully supports Java 11+ and
+used inside [PraxisLIVE](https://www.praxislive.org). Based on Processing v4, it fully supports Java 17+ and
 the Java module system, and uses [LWJGL](https://www.lwjgl.org) for OpenGL rendering.
 
 This repository contains a number of examples ported from Processing to Java, using libp5x. They all use the
-Gradle build system. The `gradle.build` files may be used as templates for other projects.
+Maven build system. The POM files may be used as templates for other projects. The examples themselves
+retain their existing copyright and license.
 
 ## Contents
 
@@ -21,8 +22,12 @@ Gradle build system. The `gradle.build` files may be used as templates for other
 
 ## Running the examples
 
-All the example projects require Java 11+. Open the projects in your IDE, or use `./gradlew run`. Building any of
-the projects will create a distributable application using the Gradle application plugin.
+All the example projects require Java 17+ is available.
+
+To run each examples, use `./mvnw package exec:exec` (Linux / macOS) or `.\mvnw.cmd package exec:exec` (Windows)
+from a terminal in the project folder.
+
+Or open the projects in your favourite IDE. If you're not sure, we recommend our own packages of
+[Apache NetBeans](https://www.codelerity.com/netbeans/), obviously!
 
 Neil C Smith, [Codelerity Ltd.](https://www.codelerity.com)
-
